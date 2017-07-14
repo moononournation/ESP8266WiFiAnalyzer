@@ -10,6 +10,11 @@
 //#define ST7735_18GBLACKTAB
 //#define ST7735_144GREENTAB
 
+//POWER SAVING SETTING
+#define SCAN_COUNT_SLEEP 5
+#define LCD_PWR_PIN D0
+#define LED_PWR_PIN D2
+
 #include "ESP8266WiFi.h"
 
 #include <SPI.h>
@@ -83,7 +88,14 @@ uint16_t channel_color[] = {
   TFT_RED, TFT_ORANGE
 };
 
+uint8_t scan_count = 0;
+
 void setup() {
+  pinMode(LCD_PWR_PIN, OUTPUT);   // sets the pin as output
+  pinMode(LED_PWR_PIN, OUTPUT);   // sets the pin as output
+  digitalWrite(LCD_PWR_PIN, HIGH);
+  digitalWrite(LED_PWR_PIN, HIGH);
+
   // init LCD
 #if defined(ST7735_18GREENTAB)
   tft.initR(INITR_18GREENTAB);
@@ -217,5 +229,12 @@ void loop() {
 
   // Wait a bit before scanning again
   delay(5000);
+
+  //POWER SAVING
+  if (++scan_count >= SCAN_COUNT_SLEEP) {
+    digitalWrite(LCD_PWR_PIN, LOW);
+    digitalWrite(LED_PWR_PIN, LOW);
+    ESP.deepSleep(0);
+  }
 }
 
