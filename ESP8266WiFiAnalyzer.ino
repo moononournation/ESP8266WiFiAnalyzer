@@ -12,8 +12,8 @@
 
 //POWER SAVING SETTING
 #define SCAN_COUNT_SLEEP 5
-#define LCD_PWR_PIN D0
-#define LED_PWR_PIN D2
+#define LCD_PWR_PIN D2
+#define LED_PWR_PIN D4
 
 #include "ESP8266WiFi.h"
 
