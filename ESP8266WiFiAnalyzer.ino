@@ -12,8 +12,15 @@
 
 //POWER SAVING SETTING
 #define SCAN_COUNT_SLEEP 5
-#define LCD_PWR_PIN D2
-#define LED_PWR_PIN D4
+// Uncomment this option if using PNP transistor control LCD power
+#define PNP_PWR_TRANSISTOR
+
+#if defined(PNP_PWR_TRANSISTOR)
+#define LCD_PWR_PIN 4 // D2
+#else
+#define LCD_PWR_PIN 4 // D2
+#define LED_PWR_PIN 2 // D4
+#endif
 
 #include "ESP8266WiFi.h"
 
@@ -26,8 +33,8 @@
 #include <Adafruit_ILI9341.h>
 #endif
 
-#define TFT_DC     D1
-#define TFT_CS     D8
+#define TFT_DC     5 // D1
+#define TFT_CS     15 // D8
 
 #if defined(ST7735_18GREENTAB) || defined(ST7735_18REDTAB) || defined(ST7735_18GBLACKTAB) || defined(ST7735_144GREENTAB)
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS,  TFT_DC, 0 /* RST */);
@@ -91,10 +98,15 @@ uint16_t channel_color[] = {
 uint8_t scan_count = 0;
 
 void setup() {
+#if defined(PNP_PWR_TRANSISTOR)
+  pinMode(LCD_PWR_PIN, OUTPUT);   // sets the pin as output
+  digitalWrite(LCD_PWR_PIN, LOW); // PNP transistor on
+#else
   pinMode(LCD_PWR_PIN, OUTPUT);   // sets the pin as output
   pinMode(LED_PWR_PIN, OUTPUT);   // sets the pin as output
-  digitalWrite(LCD_PWR_PIN, HIGH);
-  digitalWrite(LED_PWR_PIN, HIGH);
+  digitalWrite(LCD_PWR_PIN, HIGH); // power on
+  digitalWrite(LED_PWR_PIN, HIGH); // power on
+#endif
 
   // init LCD
 #if defined(ST7735_18GREENTAB)
@@ -232,8 +244,12 @@ void loop() {
 
   //POWER SAVING
   if (++scan_count >= SCAN_COUNT_SLEEP) {
-    digitalWrite(LCD_PWR_PIN, LOW);
-    digitalWrite(LED_PWR_PIN, LOW);
+#if defined(PNP_PWR_TRANSISTOR)
+    pinMode(LCD_PWR_PIN, INPUT);   // disable pin
+#else
+    pinMode(LCD_PWR_PIN, INPUT);   // disable pin
+    pinMode(LED_PWR_PIN, INPUT);   // disable pin
+#endif
     ESP.deepSleep(0);
   }
 }
