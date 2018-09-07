@@ -3,6 +3,16 @@
  * Revise from ESP8266WiFi WiFiScan example.
  * Require ESP8266 board support, Adafruit GFX and ILI9341 library.
  */
+
+//Uncomment if using ESP32 board
+//#define ESP32
+
+#if defined(ESP32)
+#include "WiFi.h"
+#else
+#include "ESP8266WiFi.h"
+#endif
+
 // Uncomment only the TFT model you are using
 #define ILI9341
 //#define ST7735_18GREENTAB
@@ -20,14 +30,6 @@
 #else
 #define LCD_PWR_PIN 4 // D2
 #define LED_PWR_PIN 2 // D4
-#endif
-
-#define ESP32
-
-#if defined(ESP32)
-#include "WiFi.h"
-#else
-#include "ESP8266WiFi.h"
 #endif
 
 #include <SPI.h>
