@@ -3,7 +3,8 @@ This is a WiFi analyzer program for the ESP8266 or ESP32 board. It's meant to be
 
 ![Prototype](https://cdn.instructables.com/FVQ/3G7N/J08EJ0QI/FVQ3G7NJ08EJ0QI.RECTANGLE1.jpg)
 
-![Prototype](https://www.github.com/headHUB/ESP8266WiFiAnalyzer/blob/master/images/esp32.jpg)
+![UI](images/esp32.jpg)
+
 Please find more details at instructables:
 
 http://www.instructables.com/id/Portable-WiFi-Analyzer/
