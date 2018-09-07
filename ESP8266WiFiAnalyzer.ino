@@ -13,33 +13,52 @@
 //POWER SAVING SETTING
 #define SCAN_COUNT_SLEEP 5
 // Uncomment this option if using PNP transistor control LCD power
-#define PNP_PWR_TRANSISTOR
+//#define PNP_PWR_TRANSISTOR
 
 #if defined(PNP_PWR_TRANSISTOR)
-#define LCD_PWR_PIN 4 // D2
+#define LCD_PWR_PIN 2 // D2
 #else
 #define LCD_PWR_PIN 4 // D2
 #define LED_PWR_PIN 2 // D4
 #endif
 
+#define ESP32
+
+#if defined(ESP32)
+#include "WiFi.h"
+#else
 #include "ESP8266WiFi.h"
+#endif
 
 #include <SPI.h>
 #include <Adafruit_GFX.h>    // Core graphics library
-// Hardware-specific library
+
+// Hardware-specific library and setup
 #if defined(ST7735_18GREENTAB) || defined(ST7735_18REDTAB) || defined(ST7735_18GBLACKTAB) || defined(ST7735_144GREENTAB)
 #include <Adafruit_ST7735.h>
+#define TFT_DC 14
+#define TFT_CS 0
+// Use hardware SPI and the above for CS/DC
+//Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC);
+
+#define TFT_MOSI 12
+#define TFT_CLK 13
+#define TFT_RST 2
+#define TFT_MISO 3
+// If using the breakout, change pins as desired
+Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 #elif defined(ILI9341)
 #include <Adafruit_ILI9341.h>
-#endif
-
-#define TFT_DC     5 // D1
-#define TFT_CS     15 // D8
-
-#if defined(ST7735_18GREENTAB) || defined(ST7735_18REDTAB) || defined(ST7735_18GBLACKTAB) || defined(ST7735_144GREENTAB)
-Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS,  TFT_DC, 0 /* RST */);
-#elif defined(ILI9341)
-Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
+#define TFT_DC 14
+#define TFT_CS 0
+// Use hardware SPI and the above for CS/DC
+//Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
+#define TFT_MOSI 12
+#define TFT_CLK 13
+#define TFT_RST 2
+#define TFT_MISO 3
+// If using the breakout, change pins as desired
+Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 #endif
 
 // Graph constant
@@ -195,9 +214,9 @@ void loop() {
       tft.print('(');
       tft.print(rssi);
       tft.print(')');
-      if (WiFi.encryptionType(i) == ENC_TYPE_NONE) {
-        tft.print('*');
-      }
+      //if (WiFi.encryptionType(i) == ENC_TYPE_NONE) {
+      //  tft.print('*');
+      //}
 
       // rest for WiFi routine?
       delay(10);
