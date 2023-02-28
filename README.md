@@ -1,7 +1,9 @@
 # ESP8266 WiFi Analyzer
-This is a WiFi analyzer program for the ESP8266 board. It's meant to be used with the build documented in this instructable:
+This is a WiFi analyzer program for the ESP8266 or ESP32 board. It's meant to be used with the build documented in this instructable:
 
 ![Prototype](https://cdn.instructables.com/FVQ/3G7N/J08EJ0QI/FVQ3G7NJ08EJ0QI.RECTANGLE1.jpg)
+
+![UI](images/esp32.jpg)
 
 Please find more details at instructables:
 
